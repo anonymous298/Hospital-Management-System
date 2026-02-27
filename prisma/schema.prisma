@@ -17,6 +17,7 @@ datasource db {
 model User {
   id  String  @id @default(cuid())
   clerkId String  @unique
+
   username  String  @unique
   email String  @unique
   name  String?
@@ -34,6 +35,7 @@ model User {
 
 model Doctor {
   id  String  @id @default(cuid())
+
   field String
   qualification String
   location  String
@@ -97,6 +99,12 @@ model PatientDetail {
   id  String  @id @default(cuid())
   doctorAppointmentId String  @unique
 
+  fullName  String
+  age Int
+  phoneNumber Int 
+  gender  GenderRole
+  email String
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -128,4 +136,10 @@ enum UserRole {
 enum DoctorAvailabilityStatus {
   AVAILABLE
   UNAVAILABLE
+}
+
+enum GenderRole {
+  MALE
+  FEMALE
+  OTHER
 }
