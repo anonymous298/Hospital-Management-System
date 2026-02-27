@@ -22,69 +22,110 @@ model User {
   name  String?
   imageUrl  String?
 
-  role  Role  @default(PATIENT)
+  role  UserRole  @default(PATIENT)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  // payments  Payment[]
-  // doctorAppointments DoctorAppointment[]
+  payments  Payment[]
+  doctorAppointments DoctorAppointment[]
 
 }
 
 model Doctor {
   id  String  @id @default(cuid())
+  field String
+  qualification String
+  location  String
+  success String
+  experience  String
+  patients  String
+  about String
+  consultationFee Int
+
+  availability  DoctorAvailabilityStatus  @default(AVAILABLE)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  doctorAvailabilityDates  DoctorAvailabilityDate[]
+  doctorAppointments  DoctorAppointment[]
+  payments  Payment[]
 
 }
 
 model DoctorAvailabilityDate {
   id  String  @id @default(cuid())
+  doctorId  String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
+  doctor  Doctor  @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  doctorTimeSlots DoctorTimeSlot[]
 }
 
 model DoctorTimeSlot {
   id  String  @id @default(cuid())
+  doctorAvailabilityDate  String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  doctorDate  DoctorAvailabilityDate  @relation(fields: [doctorAvailabilityDate], references: [id],  onDelete: Cascade)
 
 }
 
 model DoctorAppointment {
   id  String  @id @default(cuid())
+  userId  String
+  doctorId  String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  doctor Doctor @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  patientDetail PatientDetail?
+  payment Payment?
 
 }
 
 model PatientDetail {
   id  String  @id @default(cuid())
+  doctorAppointmentId String  @unique
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+
+  doctorAppointment DoctorAppointment @relation(fields: [doctorAppointmentId], references: [id], onDelete: Cascade)
 
 }
 
 model Payment {
   id  String  @id @default(cuid())
-  // userId  String
+  userId  String
+  doctorId  String
+  doctorAppointmentId String  @unique
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  // user  User  @relation(fields: [userId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+  doctor  Doctor  @relation(fields: [doctorId], references: [id])
+  doctorAppointment DoctorAppointment @relation(fields: [doctorAppointmentId], references: [id])
   
 }
 
-enum Role {
+enum UserRole {
   PATIENT
   DOCTOR
   ADMIN
+}
+
+enum DoctorAvailabilityStatus {
+  AVAILABLE
+  UNAVAILABLE
 }
