@@ -127,6 +127,7 @@ model Payment {
   doctorId  String
   doctorAppointmentId String  @unique
 
+  amount Int
   status    PaymentStatus
   method    PaymentMethod
 
