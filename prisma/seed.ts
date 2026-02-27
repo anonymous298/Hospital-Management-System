@@ -17,23 +17,43 @@ async function main() {
   // await seedPatientDetails();
   // await seedPayment();
 
-  const doctorData = await prisma.doctor.findUnique({
+  // const doctorData = await prisma.doctor.findUnique({
+  //   where : {
+  //     id : "cmm5hgp1o0001vs86cv017d36",
+  //   },
+
+  //   include : {
+  //     doctorAvailabilityDates : {
+  //       include : {
+  //         doctorTimeSlots : true
+  //       }
+  //     }
+  //   }
+  // })
+
+  // console.log(doctorData);
+
+  // console.log(doctorData?.doctorAvailabilityDates[0].doctorTimeSlots[0])
+
+  const appointmentData = await prisma.doctorAppointment.findUnique({
     where : {
-      id : "cmm5hgp1o0001vs86cv017d36",
+      id : "cmm5hq8sp0000gk86vv2fdspr"
     },
 
-    include : {
-      doctorAvailabilityDates : {
+    include: {
+      user : true,
+      doctor : true,
+      timeSlot : {
         include : {
-          doctorTimeSlots : true
+          availabilityDate: true
         }
-      }
+      },
+      patientDetail : true,
+      payment : true,
     }
   })
 
-  console.log(doctorData);
-
-  console.log(doctorData?.doctorAvailabilityDates[0].doctorTimeSlots[0])
+  console.log(appointmentData);
 
   console.log("✅ Seed Complete");
 }
