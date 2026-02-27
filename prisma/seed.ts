@@ -1,52 +1,17 @@
-// import { PrismaClient, Prisma } from "../app/generated/prisma/client";
-// import { PrismaNeon } from "@prisma/adapter-neon";
-// import "dotenv/config";
+import prisma from "@/lib/prisma";
+import { randomUUID } from "node:crypto";
+import { seedUsers } from "./seed/userSeed";
+import { seedDoctors } from "./seed/doctorSeed";
 
-// const adapter = new PrismaNeon({
-//   connectionString: process.env.DATABASE_URL,
-// });
+async function main() {
+  console.log("🌱 Seeding database...");
 
-// const prisma = new PrismaClient({
-//   adapter,
-// });
+  await seedUsers();
+  await seedDoctors();
 
-// const userData: Prisma.UserCreateInput[] = [
-//   {
-//     name: "Alice",
-//     email: "alice@prisma.io",
-//     posts: {
-//       create: [
-//         {
-//           title: "Join the Prisma Discord",
-//           content: "https://pris.ly/discord",
-//           published: true,
-//         },
-//         {
-//           title: "Prisma on YouTube",
-//           content: "https://pris.ly/youtube",
-//         },
-//       ],
-//     },
-//   },
-//   {
-//     name: "Bob",
-//     email: "bob@prisma.io",
-//     posts: {
-//       create: [
-//         {
-//           title: "Follow Prisma on Twitter",
-//           content: "https://www.twitter.com/prisma",
-//           published: true,
-//         },
-//       ],
-//     },
-//   },
-// ];
+  console.log("✅ Seed Complete");
+}
 
-// export async function main() {
-//   for (const u of userData) {
-//     await prisma.user.create({ data: u });
-//   }
-// }
-
-// main();
+main()
+  .catch((e) => console.error(e))
+  .finally(() => prisma.$disconnect());
