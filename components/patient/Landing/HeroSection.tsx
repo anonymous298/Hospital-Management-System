@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
   return (
-    <section className="w-full bg-white border-b border-[#E5E7EB] min-h-screen">
+    <section className="w-full bg-white border-b border-[#E5E7EB]">
       <div className="max-w-7xl mx-auto px-6 py-20 flex flex-col-reverse lg:flex-row items-center gap-12">
 
         {/* Left Content */}
@@ -39,7 +39,7 @@ const HeroSection = () => {
         {/* Right Illustration */}
         <div className="flex-1 flex justify-center">
           <Image
-            src="/hero-doctor.png"
+            src="/HeroSection.svg"
             alt="medical illustration"
             width={420}
             height={420}
