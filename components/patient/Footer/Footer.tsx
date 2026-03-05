@@ -11,7 +11,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="space-y-4">
             <h2 className="text-xl md:text-2xl text-[#14B8A6] font-bold text-[#0F172A]">
-              MediCare
+              Veracare
             </h2>
             <p className="text-sm text-gray-500">
               Smart hospital management and seamless doctor appointment
@@ -66,7 +66,7 @@ const Footer = () => {
 
         {/* Bottom */}
         <div className="border-t border-[#E5E7EB] mt-10 pt-6 text-center text-sm text-gray-500">
-          © {new Date().getFullYear()} MediCare. All rights reserved.
+          © {new Date().getFullYear()} Veracare. All rights reserved.
         </div>
 
       </div>
