@@ -25,7 +25,7 @@ const HeroSection = () => {
               Book Appointment
             </Button>
 
-            <Link href="/">
+            <Link href="/doctors">
               <Button
                 variant="outline"
                 className="border-[#E5E7EB] text-[#0F172A]"
