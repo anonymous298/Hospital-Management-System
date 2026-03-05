@@ -1,32 +1,66 @@
-import { Button } from '@/components/ui/button'
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
-import Link from 'next/link'
-import React from 'react'
+import { Button } from "@/components/ui/button"
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
+import Link from "next/link"
 
 const DesktopNavbar = () => {
-  return (
-    <div className='max-md:hidden'>
-        <div className='navOpt flex gap-10 items-center'>
-            <div className="navLinks flex gap-5 items-center">
-                <Link href={'/'}>Home</Link>
-                <Link href={'/'}>Our Doctors</Link>
-                <Link href={'/'}>Services</Link>
-            </div>
+    return (
+        <div className="hidden md:flex items-center gap-10">
 
-            <div className="navBtns flex gap-3 items-center">
+            {/* Navigation */}
+            <nav className="flex items-center gap-8 text-sm font-medium">
+                <Link
+                    href="/"
+                    className="text-muted-foreground hover:text-[#14B8A6] transition-colors"
+                >
+                    Home
+                </Link>
+
+                <Link
+                    href="/doctors"
+                    className="text-muted-foreground hover:text-[#14B8A6] transition-colors"
+                >
+                    Our Doctors
+                </Link>
+
+                <Link
+                    href="/services"
+                    className="text-muted-foreground hover:text-[#14B8A6] transition-colors"
+                >
+                    Services
+                </Link>
+
+                <Link
+                    href="/contact"
+                    className="text-muted-foreground hover:text-[#14B8A6] transition-colors"
+                >
+                    Contact
+                </Link>
+            </nav>
+
+            {/* Auth */}
+            <div className="flex items-center gap-3">
+                <Link href="/appointment">
+                    <Button size="sm">
+                        Book Appointment
+                    </Button>
+                </Link>
+                
                 <SignedOut>
-                    <SignInButton mode='modal'>
-                        <Button>Sign In</Button>
+
+                    <SignInButton mode="modal">
+                        <Button variant="outline" size="sm">
+                            Sign In
+                        </Button>
                     </SignInButton>
+
                 </SignedOut>
 
                 <SignedIn>
-                    <UserButton/>
+                    <UserButton afterSignOutUrl="/" />
                 </SignedIn>
             </div>
         </div>
-    </div>
-  )
+    )
 }
 
 export default DesktopNavbar
