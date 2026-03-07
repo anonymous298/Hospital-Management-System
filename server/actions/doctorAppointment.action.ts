@@ -6,6 +6,7 @@ import { Doctor, DoctorTimeSlot } from "@/types/doctor";
 import { PatientFormData } from "@/types/patientDetail";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getCurrentDbUserId } from "./user.action";
+import { createPatientDetail } from "./patientDetail.action";
 
 
 // Function for creating Doctor Appointment
@@ -64,6 +65,12 @@ export async function createDoctorAppointment({
                     email: patientForm.email
                 }
             });
+            
+            // Creating Patient Detail Based on Current Appointment In Transaction
+            // await createPatientDetail({
+            //     form : patientForm,
+            //     appointmentId: currentAppointment.id
+            // })
             
             console.log("Patient Detail Created...")
             

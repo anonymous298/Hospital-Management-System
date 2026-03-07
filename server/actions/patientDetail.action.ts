@@ -2,14 +2,14 @@
 
 import { GenderRole } from "@/app/generated/prisma/enums";
 import prisma from "@/lib/prisma";
-import { FormProp } from "@/types/patientDetail";
+import { PatientFormData } from "@/types/patientDetail";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { getCurrentDbUserId } from "./user.action";
 
 
 
 // Function for Creating Patient Detail Based On The Appointment Id Created In Transaction
-export async function createPatientDetail({form, appointmentId}: {form: FormProp, appointmentId: string}) {
+export async function createPatientDetail({form, appointmentId}: {form: PatientFormData, appointmentId: string}) {
     try {
         const user = await currentUser();
 
@@ -22,9 +22,9 @@ export async function createPatientDetail({form, appointmentId}: {form: FormProp
             data : {
                 doctorAppointmentId: appointmentId,
                 fullName: form.fullName,
-                age: form.age,
+                age: parseInt(form.age),
                 phoneNumber: form.phoneNumber,
-                gender: form.gender,
+                gender: (form.gender as GenderRole),
                 email: form.email,
             }
         });
