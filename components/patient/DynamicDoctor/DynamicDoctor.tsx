@@ -33,7 +33,7 @@ interface DoctorAvailabilityDate {
 
 interface Doctor {
   id: string
-  imageUrl?: string
+  imageUrl?: string | null
   name: string                          // UI helper (from Clerk / external)
   specialization: string
   qualification: string
@@ -57,57 +57,57 @@ interface PatientFormData {
 
 // ─── Dummy Data (hardcoded, replace with real fetch later) ────────────────────
 
-const dummyDoctor: Doctor = {
-  id: 'clx1a2b3c4d5',
-  name: 'Dr. Arjun Mehta',
-  imageUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
-  specialization: 'Cardiologist',
-  qualification: 'MBBS · MD (Cardiology) · DM — AIIMS New Delhi',
-  location: 'Apollo Hospital, Jubilee Hills, Hyderabad',
-  success: '97%',
-  experience: '14 yrs',
-  patients: '8,200+',
-  about:
-    'Dr. Arjun Mehta is a senior interventional cardiologist with over 14 years of experience managing complex cardiovascular conditions including coronary artery disease, heart failure, and arrhythmias. He completed his DM in Cardiology from AIIMS New Delhi and is a Fellow of the Cardiological Society of India. Known for his patient-first philosophy, Dr. Mehta combines advanced diagnostics with personalised treatment plans to deliver consistently excellent outcomes.',
-  consultationFee: 800,
-  availability: 'AVAILABLE',
-  doctorAvailabilityDates: [
-    {
-      id: 'date_01',
-      doctorId: 'clx1a2b3c4d5',
-      date: new Date('2025-07-14'),
-      doctorTimeSlots: [
-        { id: 'sl_01', availabilityDateId: 'date_01', startTime: '09:00', endTime: '09:30', doctorAppointment: { id: 'apt_1' } },
-        { id: 'sl_02', availabilityDateId: 'date_01', startTime: '09:30', endTime: '10:00', doctorAppointment: null },
-        { id: 'sl_03', availabilityDateId: 'date_01', startTime: '10:00', endTime: '10:30', doctorAppointment: null },
-        { id: 'sl_04', availabilityDateId: 'date_01', startTime: '10:30', endTime: '11:00', doctorAppointment: { id: 'apt_2' } },
-        { id: 'sl_05', availabilityDateId: 'date_01', startTime: '11:00', endTime: '11:30', doctorAppointment: null },
-        { id: 'sl_06', availabilityDateId: 'date_01', startTime: '11:30', endTime: '12:00', doctorAppointment: null },
-      ],
-    },
-    {
-      id: 'date_02',
-      doctorId: 'clx1a2b3c4d5',
-      date: new Date('2025-07-16'),
-      doctorTimeSlots: [
-        { id: 'sl_07', availabilityDateId: 'date_02', startTime: '14:00', endTime: '14:30', doctorAppointment: null },
-        { id: 'sl_08', availabilityDateId: 'date_02', startTime: '14:30', endTime: '15:00', doctorAppointment: null },
-        { id: 'sl_09', availabilityDateId: 'date_02', startTime: '15:00', endTime: '15:30', doctorAppointment: { id: 'apt_3' } },
-        { id: 'sl_10', availabilityDateId: 'date_02', startTime: '15:30', endTime: '16:00', doctorAppointment: null },
-      ],
-    },
-    {
-      id: 'date_03',
-      doctorId: 'clx1a2b3c4d5',
-      date: new Date('2025-07-18'),
-      doctorTimeSlots: [
-        { id: 'sl_11', availabilityDateId: 'date_03', startTime: '10:00', endTime: '10:30', doctorAppointment: null },
-        { id: 'sl_12', availabilityDateId: 'date_03', startTime: '10:30', endTime: '11:00', doctorAppointment: null },
-        { id: 'sl_13', availabilityDateId: 'date_03', startTime: '17:00', endTime: '17:30', doctorAppointment: null },
-      ],
-    },
-  ],
-}
+// const dummyDoctor: Doctor = {
+//   id: 'clx1a2b3c4d5',
+//   name: 'Dr. Arjun Mehta',
+//   imageUrl: 'https://randomuser.me/api/portraits/men/75.jpg',
+//   specialization: 'Cardiologist',
+//   qualification: 'MBBS · MD (Cardiology) · DM — AIIMS New Delhi',
+//   location: 'Apollo Hospital, Jubilee Hills, Hyderabad',
+//   success: '97%',
+//   experience: '14 yrs',
+//   patients: '8,200+',
+//   about:
+//     'Dr. Arjun Mehta is a senior interventional cardiologist with over 14 years of experience managing complex cardiovascular conditions including coronary artery disease, heart failure, and arrhythmias. He completed his DM in Cardiology from AIIMS New Delhi and is a Fellow of the Cardiological Society of India. Known for his patient-first philosophy, Dr. Mehta combines advanced diagnostics with personalised treatment plans to deliver consistently excellent outcomes.',
+//   consultationFee: 800,
+//   availability: 'AVAILABLE',
+//   doctorAvailabilityDates: [
+//     {
+//       id: 'date_01',
+//       doctorId: 'clx1a2b3c4d5',
+//       date: new Date('2025-07-14'),
+//       doctorTimeSlots: [
+//         { id: 'sl_01', availabilityDateId: 'date_01', startTime: '09:00', endTime: '09:30', doctorAppointment: { id: 'apt_1' } },
+//         { id: 'sl_02', availabilityDateId: 'date_01', startTime: '09:30', endTime: '10:00', doctorAppointment: null },
+//         { id: 'sl_03', availabilityDateId: 'date_01', startTime: '10:00', endTime: '10:30', doctorAppointment: null },
+//         { id: 'sl_04', availabilityDateId: 'date_01', startTime: '10:30', endTime: '11:00', doctorAppointment: { id: 'apt_2' } },
+//         { id: 'sl_05', availabilityDateId: 'date_01', startTime: '11:00', endTime: '11:30', doctorAppointment: null },
+//         { id: 'sl_06', availabilityDateId: 'date_01', startTime: '11:30', endTime: '12:00', doctorAppointment: null },
+//       ],
+//     },
+//     {
+//       id: 'date_02',
+//       doctorId: 'clx1a2b3c4d5',
+//       date: new Date('2025-07-16'),
+//       doctorTimeSlots: [
+//         { id: 'sl_07', availabilityDateId: 'date_02', startTime: '14:00', endTime: '14:30', doctorAppointment: null },
+//         { id: 'sl_08', availabilityDateId: 'date_02', startTime: '14:30', endTime: '15:00', doctorAppointment: null },
+//         { id: 'sl_09', availabilityDateId: 'date_02', startTime: '15:00', endTime: '15:30', doctorAppointment: { id: 'apt_3' } },
+//         { id: 'sl_10', availabilityDateId: 'date_02', startTime: '15:30', endTime: '16:00', doctorAppointment: null },
+//       ],
+//     },
+//     {
+//       id: 'date_03',
+//       doctorId: 'clx1a2b3c4d5',
+//       date: new Date('2025-07-18'),
+//       doctorTimeSlots: [
+//         { id: 'sl_11', availabilityDateId: 'date_03', startTime: '10:00', endTime: '10:30', doctorAppointment: null },
+//         { id: 'sl_12', availabilityDateId: 'date_03', startTime: '10:30', endTime: '11:00', doctorAppointment: null },
+//         { id: 'sl_13', availabilityDateId: 'date_03', startTime: '17:00', endTime: '17:30', doctorAppointment: null },
+//       ],
+//     },
+//   ],
+// }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -119,7 +119,7 @@ const isBooked = (s: DoctorTimeSlot) => !!s.doctorAppointment
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function DynamicDoctor({ doctor = dummyDoctor }: { doctor?: Doctor }) {
+export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
   const [selectedDateIdx, setSelectedDateIdx] = useState(0)
   const [selectedSlot, setSelectedSlot] = useState<DoctorTimeSlot | null>(null)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('ONLINE')
@@ -213,7 +213,7 @@ export default function DynamicDoctor({ doctor = dummyDoctor }: { doctor?: Docto
             </div>
 
             {/* ── RIGHT: Doctor Information ── */}
-            <div className="docInformation col-span-1 md:col-span-6 h-fit fade-up" style={{ animationDelay: '0.1s' }}>
+            <div className="docInformation col-span-1 md:col-span-6 fade-up" style={{ animationDelay: '0.1s' }}>
               <div className="bg-white border border-[#E5E7EB] rounded-3xl p-8 shadow-sm h-full">
 
                 {/* Header */}
