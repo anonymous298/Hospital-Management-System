@@ -21,3 +21,16 @@ export async function fetchLimitedDoctors() {
         throw new Error('Unable to find LimitedDoctors');
     }
 }
+
+export async function fetchAllDoctors() {
+    try {
+        const doctors = await prisma.doctor.findMany({});
+
+        if (!doctors) return [];
+
+        return doctors;
+    } catch (error) {
+        console.log("UnAble to fetch all doctors data", error);
+        throw new Error("Unable to fetch all doctors data");
+    }
+}
