@@ -55,6 +55,10 @@ async function main() {
 
   // console.log(appointmentData);
 
+  // const data = await prisma.doctorTimeSlot.findMany({});
+
+  // console.log(data);
+
   console.log("✅ Seed Complete");
 }
 
