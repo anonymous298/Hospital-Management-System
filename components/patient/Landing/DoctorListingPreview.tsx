@@ -1,5 +1,5 @@
 
-import { fetchLimitedDoctors } from '@/server/actions/doctor.seed'
+import { fetchLimitedDoctors } from '@/server/actions/doctor.action'
 import DoctorCard from './DoctorCard'
 import { DoctorAvailabilityStatus } from '@/app/generated/prisma/enums'
 
