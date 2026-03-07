@@ -8,6 +8,11 @@ import {
   User, Mail, Phone, ChevronDown, BadgeCheck, AlertCircle,
   Loader2Icon,
 } from 'lucide-react'
+import type { DoctorTimeSlot, DoctorAvailabilityDate, Doctor } from '@/types/doctor'
+import type {PatientFormData} from '@/types/patientDetail'
+import { useUser } from '@clerk/nextjs'
+import { createDoctorAppointment } from '@/server/actions/doctorAppointment.action'
+import toast from 'react-hot-toast'
 
 // ─── Types (Prisma schema) ────────────────────────────────────────────────────
 
@@ -15,45 +20,6 @@ type DoctorAvailabilityStatus = 'AVAILABLE' | 'UNAVAILABLE'
 type GenderRole = 'MALE' | 'FEMALE' | 'OTHER'
 type PaymentMethod = 'ONLINE' | 'CASH'
 type PaymentStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED'
-
-interface DoctorTimeSlot {
-  id: string
-  availabilityDateId: string
-  startTime: string
-  endTime: string
-  doctorAppointment?: { id: string } | null
-}
-
-interface DoctorAvailabilityDate {
-  id: string
-  doctorId: string
-  date: Date
-  doctorTimeSlots: DoctorTimeSlot[]
-}
-
-interface Doctor {
-  id: string
-  imageUrl?: string | null
-  name: string                          // UI helper (from Clerk / external)
-  specialization: string
-  qualification: string
-  location: string
-  success: string                       // String in schema e.g. "97%"
-  experience: string                    // String in schema e.g. "14 years"
-  patients: string                      // String in schema e.g. "8,200+"
-  about: string
-  consultationFee: number               // Int in schema
-  availability: DoctorAvailabilityStatus
-  doctorAvailabilityDates: DoctorAvailabilityDate[]
-}
-
-interface PatientFormData {
-  fullName: string
-  age: string
-  phoneNumber: string
-  gender: GenderRole | ''
-  email: string
-}
 
 // ─── Dummy Data (hardcoded, replace with real fetch later) ────────────────────
 
@@ -115,7 +81,7 @@ const fmtDay   = (d: Date) => new Date(d).toLocaleDateString('en-IN', { weekday:
 const fmtDate  = (d: Date) => new Date(d).getDate()
 const fmtMonth = (d: Date) => new Date(d).toLocaleDateString('en-IN', { month: 'short' })
 const fmtFull  = (d: Date) => new Date(d).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
-const isBooked = (s: DoctorTimeSlot) => !!s.doctorAppointment
+// const isBooked = (s: DoctorTimeSlot) => !!s.doctorAppointment
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -136,12 +102,37 @@ export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
   const handleForm = (field: keyof PatientFormData, value: string) =>
     setForm(prev => ({ ...prev, [field]: value }))
 
-  const tempDeleteMe = async () => {
-    setIsBooking(true)
-    setTimeout(() => {
-        setIsBooking(false)
-    }, 2000);
+  
+  const handleCreateAppointment = async () => {
+    try {
+      // const {user} = useUser()
+
+      // if (!user) throw new Error("UnAuthenticated User On Frontend");
+
+      setIsBooking(true);
+
+      const result = await createDoctorAppointment({
+        doctor: doctor,
+        timeSlot: (selectedSlot as DoctorTimeSlot),
+        paymentMethod: paymentMethod,
+        paymentStatus: 'PENDING',
+        patientForm: form,
+      })
+
+      if (result) {
+        toast.success("Appointment Created Successfully!");
+        window.location.reload();
+      } else {
+        toast.error("Failed to create appointment. Please try again.");
+      }
+
+    } catch (error) {
+      
+    } finally {
+      setIsBooking(false)
+    }
   }
+
 
   // shared input style
   const inputCls = `w-full bg-[#F8FAFC] border border-[#E5E7EB] rounded-xl px-4 py-3 text-sm text-[#0F172A] placeholder-[#94A3B8] focus:outline-none focus:ring-2 focus:ring-[#14B8A6]/40 focus:border-[#14B8A6] transition`
@@ -287,8 +278,11 @@ export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
                 ) : (
                   <div className="flex flex-wrap gap-3">
                     {doctor.doctorAvailabilityDates.map((d, idx) => {
+                      
                       const active = selectedDateIdx === idx
-                      const free   = d.doctorTimeSlots.filter(s => !isBooked(s)).length
+                      // const free   = d.doctorTimeSlots.filter(s => !isBooked(s)).length
+                      const free = d.doctorTimeSlots.filter(slot => !slot.isBooked).length
+
                       return (
                         <button
                           key={d.id}
@@ -339,7 +333,7 @@ export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
                 ) : (
                   <div className="grid grid-cols-2 gap-2.5">
                     {currentDate.doctorTimeSlots.map(slot => {
-                      const booked = isBooked(slot)
+                      const booked = slot.isBooked;
                       const active = selectedSlot?.id === slot.id
                       return (
                         <button
@@ -570,9 +564,9 @@ export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
                     </div>
 
                     <button
-                      disabled={!isFormFilled || !isAvailable}
-                      className="w-full h-13 py-3.5 bg-[#14B8A6] hover:bg-[#0f9a8e] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-semibold rounded-2xl transition-all shadow-lg shadow-teal-100 disabled:shadow-none text-sm"
-                      onClick={tempDeleteMe}
+                      disabled={!isFormFilled || !isAvailable || isBooking}
+                      className="flex justify-center items-center gap-3 w-full h-13 py-3.5 bg-[#14B8A6] hover:bg-[#0f9a8e] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-semibold rounded-2xl transition-all shadow-lg shadow-teal-100 disabled:shadow-none text-sm"
+                      onClick={handleCreateAppointment}
                     >
                       {!isAvailable
                         ? 'Doctor Unavailable'
