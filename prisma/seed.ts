@@ -11,8 +11,8 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // await seedUsers();
-  // await seedDoctors();
-  // await seedDoctorAvailabilityDate('cmm5hgp1o0001vs86cv017d36');
+  await seedDoctors();
+  // await seedDoctorAvailabilityDate('cmmfsciej0000ecgm26ph6gqb');
   // await seedDoctorAppointments();
   // await seedPatientDetails();
   // await seedPayment();
@@ -35,25 +35,25 @@ async function main() {
 
   // console.log(doctorData?.doctorAvailabilityDates[0].doctorTimeSlots[0])
 
-  const appointmentData = await prisma.doctorAppointment.findUnique({
-    where : {
-      id : "cmm5hq8sp0000gk86vv2fdspr"
-    },
+  // const appointmentData = await prisma.doctorAppointment.findUnique({
+  //   where : {
+  //     id : "cmm5hq8sp0000gk86vv2fdspr"
+  //   },
 
-    include: {
-      user : true,
-      doctor : true,
-      timeSlot : {
-        include : {
-          availabilityDate: true
-        }
-      },
-      patientDetail : true,
-      payment : true,
-    }
-  })
+  //   include: {
+  //     user : true,
+  //     doctor : true,
+  //     timeSlot : {
+  //       include : {
+  //         availabilityDate: true
+  //       }
+  //     },
+  //     patientDetail : true,
+  //     payment : true,
+  //   }
+  // })
 
-  console.log(appointmentData);
+  // console.log(appointmentData);
 
   console.log("✅ Seed Complete");
 }
