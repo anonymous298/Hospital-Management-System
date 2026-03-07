@@ -55,52 +55,53 @@ export async function seedDoctors() {
   const doctorData = await prisma.doctor.create({
 
     data: {
-      name: "Dr. Fatima Khan",
-      imageUrl: "https://res.cloudinary.com/duplkba46/image/upload/v1770477280/doctors/jfrdnomnt4yveeglqprc.jpg",
-      specialization: "Cardiologist",
+      name: "Dr. Ali Ahmed",
+      imageUrl: "https://images.pexels.com/photos/8460094/pexels-photo-8460094.jpeg",
+      specialization: "Neurologist",
       qualification: "BDS, MDS",
       location: "Smile Dental Care",
-      success: "89%",
-      experience: "3+ Years",
-      patients: "50k+",
-      consultationFee: 4000,
-      about: "Cardiologist with expertise in heart disease treatment and prevention",
+      success: "98%",
+      experience: "10+ Years",
+      patients: "70k+",
+      consultationFee: 7000,
+      about: "Neurologist with expertise in brain and nervous system disorders",
       availability: "AVAILABLE",
       doctorAvailabilityDates: {
         create: [
           {
-            date: new Date("2026-03-05"),
+            date: new Date("2026-03-01"),
             doctorTimeSlots: {
               create: [
                 { startTime: "10:00", endTime: "10:30" },
                 { startTime: "10:30", endTime: "11:00" },
                 { startTime: "11:00", endTime: "11:30" },
+                { startTime: "11:30", endTime: "12:00" },
               ],
             },
           },
           {
-            date: new Date("2026-03-06"),
+            date: new Date("2026-03-03"),
             doctorTimeSlots: {
               create: [
                 { startTime: "14:00", endTime: "14:30" },
                 { startTime: "14:30", endTime: "15:00" },
                 { startTime: "15:00", endTime: "15:30" },
+                { startTime: "15:30", endTime: "16:00" },
               ],
             },
           },
           {
-            date: new Date("2026-03-09"),
+            date: new Date("2026-03-04"),
             doctorTimeSlots: {
               create: [
                 { startTime: "09:00", endTime: "09:30" },
                 { startTime: "09:30", endTime: "10:00" },
                 { startTime: "10:00", endTime: "10:30" },
-                { startTime: "10:30", endTime: "11:00" },
               ],
             },
           },
           {
-            date: new Date("2026-03-10"),
+            date: new Date("2026-03-07"),
             doctorTimeSlots: {
               create: [
                 { startTime: "13:00", endTime: "13:30" },
