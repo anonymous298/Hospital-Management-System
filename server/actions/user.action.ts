@@ -3,7 +3,8 @@
 import prisma from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 
-const createInitialUserInDbOnSignIn = async () => {
+// Function for Creating User In DB On Initial SignIn
+export async function createInitialUserInDbOnSignIn() {
     try {
         const {userId: clerkId} = await auth();
         const user = await currentUser();
