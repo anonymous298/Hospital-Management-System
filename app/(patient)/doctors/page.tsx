@@ -1,6 +1,6 @@
 
 import AllDoctorsListing from '@/components/patient/Doctors/AllDoctorsListing'
-import { fetchAllDoctors } from '@/server/actions/doctor.seed'
+import { fetchAllDoctors } from '@/server/actions/doctor.action'
 
 
 const Page = async () => {
