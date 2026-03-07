@@ -18,7 +18,7 @@ interface Props {
 
 const AllDoctorsListing: React.FC<Props> = ({ doctors }) => {
   return (
-    <section className="py-16 bg-white">
+    <section className=" bg-white">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-[#0F172A] mb-8 text-center">Our Doctors</h2>
         <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
