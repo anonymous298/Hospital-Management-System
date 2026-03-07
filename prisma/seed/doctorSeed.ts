@@ -55,6 +55,8 @@ export async function seedDoctors() {
   const doctorData = await prisma.doctor.create({
 
     data: {
+      name: "Dr. Sarah Johnson",
+      imageUrl: "https://res.cloudinary.com/duplkba46/image/upload/v1770477280/doctors/jfrdnomnt4yveeglqprc.jpg",
       specialization: "Dentist",
       qualification: "BDS, MDS",
       location: "Smile Dental Care",
