@@ -13,6 +13,8 @@ export async function createPayment({ amount, status, method, doctorId, appointm
         if (!user) throw new Error("UnAuthenticated User");
 
         const userDbId = await getCurrentDbUserId();
+        if (!userDbId) throw new Error("User Not in DB");
+
 
         const paymentData = await prisma.payment.create({
             data: {
