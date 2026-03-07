@@ -9,7 +9,7 @@ export async function seedPatientDetails() {
             fullName: "Talha",
             age: 18,
             gender: "MALE",
-            phoneNumber: 1234567890,
+            phoneNumber: '1234567890',
             email: "talha@example.com"
         }
     })
