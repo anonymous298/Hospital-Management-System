@@ -3,6 +3,7 @@
 import React from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 interface DoctorCardProps {
   name: string
@@ -28,7 +29,7 @@ const DoctorCard: React.FC<DoctorCardProps> = ({
       <p className="text-[#14B8A6] font-medium">{specialization}</p>
       <p className="text-[#64748B] mt-2">{experience} experience</p>
       <p className="text-[#0F172A] font-semibold mt-2">Fee: ${consultationFee}</p>
-      <Button className="mt-4 w-full bg-[#14B8A6] hover:bg-[#0fa391]">Book Appointment</Button>
+      <Link href={`/doctors/${name}`} className="mt-4 w-full p-3 rounded-xl text-white bg-[#14B8A6] hover:bg-[#0fa391]">Book Appointment</Link>
     </div>
   )
 }
