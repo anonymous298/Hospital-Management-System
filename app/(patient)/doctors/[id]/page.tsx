@@ -1,6 +1,6 @@
 import DynamicDoctor from '@/components/patient/DynamicDoctor/DynamicDoctor';
 import prisma from '@/lib/prisma';
-import { fetchSingleDoctor } from '@/server/actions/doctor.seed';
+import { fetchSingleDoctor } from '@/server/actions/doctor.action';
 import React from 'react'
 
 export interface PageProps {
