@@ -12,7 +12,7 @@ export interface PatientFormData {
 export interface FormProp {
     fullName: string
     age: number
-    phoneNumber: number
+    phoneNumber: string
     gender: GenderRole
     email: string
 }
