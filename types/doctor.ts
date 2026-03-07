@@ -5,6 +5,7 @@ export interface DoctorTimeSlot {
   availabilityDateId: string
   startTime: string
   endTime: string
+  isBooked: boolean
   doctorAppointment?: { id: string } | null
 }
 
