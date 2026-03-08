@@ -34,9 +34,11 @@ const MobileNavbar = () => {
               Our Doctors
             </Link>
 
-            <Link href="/services" onClick={() => setOpen(false)}>
-              Services
-            </Link>
+            <SignedIn>
+              <Link href="/appointments" onClick={() => setOpen(false)}>
+                My Appointments
+              </Link>
+            </SignedIn>
 
             <Link href="/contact" onClick={() => setOpen(false)}>
               Contact

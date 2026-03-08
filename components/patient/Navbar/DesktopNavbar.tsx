@@ -29,6 +29,15 @@ const DesktopNavbar = () => {
                     Services
                 </Link>
 
+                <SignedIn>
+                    <Link
+                        href="/appointments"
+                        className="text-muted-foreground hover:text-[#14B8A6] transition-colors"
+                    >
+                        My Appointments
+                    </Link>
+                </SignedIn>
+
                 <Link
                     href="/contact"
                     className="text-muted-foreground hover:text-[#14B8A6] transition-colors"
