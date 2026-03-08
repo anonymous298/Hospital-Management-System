@@ -35,9 +35,9 @@ async function main() {
 
   // console.log(doctorData?.doctorAvailabilityDates[0].doctorTimeSlots[0])
 
-  // const appointmentData = await prisma.doctorAppointment.findUnique({
+  // const appointmentData = await prisma.doctorAppointment.findMany({
   //   where : {
-  //     id : "cmm5hq8sp0000gk86vv2fdspr"
+  //     userId : "cmm5hq8sp0000gk86vv2fdspr"
   //   },
 
   //   include: {
