@@ -95,6 +95,8 @@ export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
 
   const [isBooking, setIsBooking] = useState(false)
 
+  const {isSignedIn} = useUser()
+
   const isAvailable   = doctor.availability === 'AVAILABLE'
   const currentDate   = doctor.doctorAvailabilityDates[selectedDateIdx]
   const isFormFilled  = form.fullName && form.age && form.phoneNumber && form.gender && form.email && selectedSlot
@@ -105,9 +107,11 @@ export default function DynamicDoctor({ doctor }: { doctor: Doctor }) {
   
   const handleCreateAppointment = async () => {
     try {
-      // const {user} = useUser()
 
-      // if (!user) throw new Error("UnAuthenticated User On Frontend");
+      if (!isSignedIn) {
+        toast.error("Please login to book an appointment.");
+        return;
+      }
 
       setIsBooking(true);
 
