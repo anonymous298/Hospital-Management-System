@@ -96,3 +96,40 @@ export async function createDoctorAppointment({
         return {success : false}
     }
 }
+
+// Function for Fetching All Appointment Data Based on Current User
+export async function fetchAllCurrentUserDoctorAppointments() {
+    try {
+        const {userId} = await auth();
+        if (!userId) throw new Error("UnAuthenticated User");
+
+        const currentDbUserId = await getCurrentDbUserId();
+        if (!currentDbUserId) throw new Error("User not exists in DB!")
+
+        const doctorAppointmentsData = await prisma.doctorAppointment.findMany({
+            where : {
+                userId: currentDbUserId,
+            },
+
+            include : {
+                user: true,
+                doctor: true,
+                timeSlot: {
+                    include : {
+                        availabilityDate: true,
+                    }
+                },
+                patientDetail: true,
+                payment: true,
+            }
+        });
+
+        if (!doctorAppointmentsData) return [];
+
+        return doctorAppointmentsData;
+
+    } catch (error) {
+        console.log("Error fetching Current User Doctor Appointments", error);
+        throw new Error("Error fetching Current User Doctor Appointments");
+    }
+}
