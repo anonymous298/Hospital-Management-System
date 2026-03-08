@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button"
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs"
+import { Sparkles } from "lucide-react"
 import Link from "next/link"
 
 const DesktopNavbar = () => {
     return (
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden lg:flex items-center gap-10">
 
             {/* Navigation */}
             <nav className="flex items-center gap-8 text-sm font-medium">
@@ -46,12 +47,16 @@ const DesktopNavbar = () => {
                 </Link>
             </nav>
 
+            <div className="h-5 w-px bg-[#E5E7EB]" />
+
             {/* Auth */}
             <div className="flex items-center gap-3">
-                <Link href="/appointment">
-                    <Button size="sm">
+                {/* Book appointment CTA */}
+                <Link href="/doctors">
+                    <button className="flex items-center gap-1.5 px-4 py-2 bg-[#14B8A6] hover:bg-[#0f9a8e] text-white text-sm font-bold rounded-xl transition-all duration-200 shadow-sm shadow-teal-100 hover:shadow-md hover:shadow-teal-200 hover:-translate-y-0.5">
+                        <Sparkles className="w-3.5 h-3.5" />
                         Book Appointment
-                    </Button>
+                    </button>
                 </Link>
                 
                 <SignedOut>
