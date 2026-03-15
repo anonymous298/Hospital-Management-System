@@ -97,6 +97,8 @@ model DoctorAppointment {
   doctorId  String
   timeSlotId  String  @unique
 
+  status AppointmentStatus @default(PENDING)
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
@@ -172,4 +174,11 @@ enum PaymentStatus {
   PROCESSING
   COMPLETED
   FAILED
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
 }
