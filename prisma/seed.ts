@@ -11,7 +11,7 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // await seedUsers();
-  await seedDoctors();
+  // await seedDoctors();
   // await seedDoctorAvailabilityDate('cmmfsciej0000ecgm26ph6gqb');
   // await seedDoctorAppointments();
   // await seedPatientDetails();
@@ -58,6 +58,25 @@ async function main() {
   // const data = await prisma.doctorTimeSlot.findMany({});
 
   // console.log(data);
+
+  // await prisma.user.update({
+  //   where : {
+  //     id : "cmmh7bdzx000004jgjm6w3ucs"
+  //   },
+  //   data : {
+  //     doctorId: "cmmp4vse30000aogmfam5d9x5"
+  //   }
+  // })
+
+  // console.log("User updated with doctorId");
+
+  const userData = await prisma.user.findUnique({
+    where : {
+      id : "cmmh7bdzx000004jgjm6w3ucs"
+    }
+  })
+
+  console.log(userData);
 
   console.log("✅ Seed Complete");
 }
