@@ -1,5 +1,5 @@
 import { PatientDetail, Payment } from "@/app/generated/prisma/client"
-import { AppointmentStatus, GenderRole, PaymentMethod, PaymentStatus } from "@/app/generated/prisma/enums"
+import { AppointmentStatus, DoctorAvailabilityStatus, GenderRole, PaymentMethod, PaymentStatus, UserRole } from "@/app/generated/prisma/enums"
 
 export interface DoctorAppointmentData {
   id: string
@@ -59,22 +59,83 @@ export interface AllDoctorAppointmentsProps {
   appointments: DoctorAppointmentData[]
 }
 
-export interface DoctorAppointment {
+export interface DoctorAppointmentWithDetails {
   id: string
-  createdAt: string
+  userId: string
+  doctorId: string
+  timeSlotId: string
   status: AppointmentStatus
-  patientDetail: PatientDetail
-  payment: Payment
+  createdAt: Date
+  updatedAt: Date
+
+  user: {
+    id: string
+    clerkId: string
+    doctorId: string | null
+    username: string
+    email: string
+    name: string | null
+    imageUrl: string | null
+    role: UserRole
+    createdAt: Date
+    updatedAt: Date
+  }
+
+  doctor: {
+    id: string
+    name: string
+    specialization: string
+    qualification: string
+    location: string
+    success: string
+    experience: string
+    patients: string
+    about: string
+    consultationFee: number
+    imageUrl: string | null
+    availability: DoctorAvailabilityStatus
+    createdAt: Date
+    updatedAt: Date
+  }
+
   timeSlot: {
+    id: string
+    availabilityDateId: string
     startTime: string
     endTime: string
-    period: "AM" | "PM"
-    availabilityDate: { 
-      id: string;
-      doctorId: string;
-      createdAt: Date;
-      updatedAt: Date;
-      date: Date;
-     }
+    isBooked: boolean
+    createdAt: Date
+    updatedAt: Date
+    availabilityDate: {
+      id: string
+      doctorId: string
+      date: Date
+      createdAt: Date
+      updatedAt: Date
+    }
   }
+
+  patientDetail: {
+    id: string
+    doctorAppointmentId: string
+    fullName: string
+    age: number
+    phoneNumber: string
+    gender: GenderRole
+    email: string
+    createdAt: Date
+    updatedAt: Date
+  } | null
+
+  payment: {
+    id: string
+    userId: string
+    doctorId: string
+    doctorAppointmentId: string
+    amount: number
+    status: PaymentStatus
+    method: PaymentMethod
+    createdAt: Date
+    updatedAt: Date
+  } | null
 }
