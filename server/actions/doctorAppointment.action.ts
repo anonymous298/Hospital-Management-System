@@ -42,7 +42,7 @@ export async function createDoctorAppointment({
             });
 
             // Atomic Update
-            await prisma.doctorTimeSlot.update({
+            await tx.doctorTimeSlot.update({
                 where : {
                     id: timeSlot.id
                 },
@@ -52,7 +52,7 @@ export async function createDoctorAppointment({
                 }
             })
 
-            console.log("Appointment Created...")
+            // console.log("Appointment Created...")
             
             // Creating Patient Detail Based On currentAppointment In Transaction
             await tx.patientDetail.create({
@@ -72,7 +72,7 @@ export async function createDoctorAppointment({
             //     appointmentId: currentAppointment.id
             // })
             
-            console.log("Patient Detail Created...")
+            // console.log("Patient Detail Created...")
             
             // Creating Payment Based On current Appointment In Transaction
             await tx.payment.create({
@@ -86,7 +86,7 @@ export async function createDoctorAppointment({
                 }
             })
 
-            console.log("Payment Created...")
+            // console.log("Payment Created...")
         })
 
         return {success : true}
@@ -136,7 +136,7 @@ export async function fetchAllCurrentUserDoctorAppointments() {
 
 
 // Function for Fetching All Appointment Data Based on Doctor Id
-export async function fetchAllDoctorAppointmentsByDoctorId(doctorId: string) {
+export async function fetchAllDoctorAppointmentsByDoctorId() {
     try {
         const {userId} = await auth();
         if (!userId) throw new Error("UnAuthenticated User");
@@ -150,10 +150,12 @@ export async function fetchAllDoctorAppointmentsByDoctorId(doctorId: string) {
 
         const doctorAppointmentsData = await prisma.doctorAppointment.findMany({
             where : {
-                doctorId,
+                doctorId: currentDbUser.doctorId!,
             },
 
             include: {
+                user: true,
+                doctor: true,
                 patientDetail: true,
                 payment: true,
                 timeSlot: {
@@ -169,6 +171,7 @@ export async function fetchAllDoctorAppointmentsByDoctorId(doctorId: string) {
         return doctorAppointmentsData;
 
     } catch (error) {
-        
+        console.log("Error fetching Doctor Appointments by Doctor Id", error);
+        return [];
     }
 }
