@@ -1,4 +1,5 @@
-import { GenderRole, PaymentMethod, PaymentStatus } from "@/app/generated/prisma/enums"
+import { PatientDetail, Payment } from "@/app/generated/prisma/client"
+import { AppointmentStatus, GenderRole, PaymentMethod, PaymentStatus } from "@/app/generated/prisma/enums"
 
 export interface DoctorAppointmentData {
   id: string
@@ -56,4 +57,24 @@ export interface DoctorAppointmentCardProps {
 
 export interface AllDoctorAppointmentsProps {
   appointments: DoctorAppointmentData[]
+}
+
+export interface DoctorAppointment {
+  id: string
+  createdAt: string
+  status: AppointmentStatus
+  patientDetail: PatientDetail
+  payment: Payment
+  timeSlot: {
+    startTime: string
+    endTime: string
+    period: "AM" | "PM"
+    availabilityDate: { 
+      id: string;
+      doctorId: string;
+      createdAt: Date;
+      updatedAt: Date;
+      date: Date;
+     }
+  }
 }
