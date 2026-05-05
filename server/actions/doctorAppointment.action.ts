@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { Doctor, DoctorTimeSlot } from "@/types/doctor";
 import { PatientFormData } from "@/types/patientDetail";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { getCurrentDbUserId } from "./user.action";
+import { getCurrentDbUser, getCurrentDbUserId } from "./user.action";
 import { createPatientDetail } from "./patientDetail.action";
 
 
@@ -131,5 +131,44 @@ export async function fetchAllCurrentUserDoctorAppointments() {
     } catch (error) {
         console.log("Error fetching Current User Doctor Appointments", error);
         throw new Error("Error fetching Current User Doctor Appointments");
+    }
+}
+
+
+// Function for Fetching All Appointment Data Based on Doctor Id
+export async function fetchAllDoctorAppointmentsByDoctorId(doctorId: string) {
+    try {
+        const {userId} = await auth();
+        if (!userId) throw new Error("UnAuthenticated User");
+
+        const currentDbUser = await getCurrentDbUser();
+        if (!currentDbUser.id) throw new Error("User not exists in DB!");
+
+        if (currentDbUser.role !== "DOCTOR") throw new Error("Unauthorized Access");
+
+        // TODO: Add user.doctorId check also
+
+        const doctorAppointmentsData = await prisma.doctorAppointment.findMany({
+            where : {
+                doctorId,
+            },
+
+            include: {
+                patientDetail: true,
+                payment: true,
+                timeSlot: {
+                    include: {
+                        availabilityDate: true,
+                    }
+                }
+            },
+        })
+
+        if (!doctorAppointmentsData) return [];
+
+        return doctorAppointmentsData;
+
+    } catch (error) {
+        
     }
 }
