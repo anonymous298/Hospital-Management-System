@@ -12,6 +12,7 @@ import {
 import { createPortal } from "react-dom"
 import { DoctorAppointmentWithDetails, } from "@/types/doctorAppointment"
 import { Prisma } from "@/app/generated/prisma/client"
+import { updateDoctorAppointmentStatus } from "@/server/actions/doctorAppointment.action"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -429,7 +430,7 @@ export default function DoctorAppointmentsPage({ appointmentData }: { appointmen
     setTimeout(() => setToast(null), 3000)
   }
 
-  const handleStatusChange = (id: string, status: AppointmentStatus) => {
+  const handleStatusChange = async (id: string, status: AppointmentStatus) => {
     setAppointments(prev => prev.map(a => {
         if (a.id !== id) return a
         const shouldCompleteCashPayment =
@@ -458,6 +459,7 @@ export default function DoctorAppointmentsPage({ appointmentData }: { appointmen
     )
 
     // TODO: await updateAppointmentStatus(id, status)
+    const updatedAppointment = await updateDoctorAppointmentStatus(id, status)
     // Backend handles: if CASH + COMPLETED → transaction to set both statuses
   }
 
