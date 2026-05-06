@@ -1,6 +1,6 @@
 "use server";
 
-import { DoctorAvailabilityStatus, GenderRole, PaymentMethod, PaymentStatus } from "@/app/generated/prisma/enums";
+import { AppointmentStatus, DoctorAvailabilityStatus, GenderRole, PaymentMethod, PaymentStatus } from "@/app/generated/prisma/enums";
 import prisma from "@/lib/prisma";
 import { Doctor, DoctorTimeSlot } from "@/types/doctor";
 import { PatientFormData } from "@/types/patientDetail";
@@ -173,5 +173,103 @@ export async function fetchAllDoctorAppointmentsByDoctorId() {
     } catch (error) {
         console.log("Error fetching Doctor Appointments by Doctor Id", error);
         return [];
+    }
+}
+
+export async function updateDoctorAppointmentStatus(id: string, status: AppointmentStatus) {
+    try {
+        const {userId} = await auth();
+        if (!userId) throw new Error("UnAuthenticated User");
+
+        const currentDbUser = await getCurrentDbUser();
+        if (!currentDbUser.id) throw new Error("User not exists in DB!");
+
+        if (currentDbUser.role !== "DOCTOR") throw new Error("Unauthorized Access");
+
+        // TODO: Add user.doctorId check also
+
+        await prisma.$transaction(async (tx) => {
+
+            // Fetch Current Appointment with Payment Details To get Payment Id for updating payment status based on appointment status
+            const currentAppointment = await tx.doctorAppointment.findUnique({
+                where : {
+                    id,
+                },
+                include : {
+                    payment: true,
+                }
+            });
+
+            // Update Appointment Status
+            const updatedAppointment = await tx.doctorAppointment.update({
+                where : {
+                    id,
+                },
+                data : {
+                    status,
+                }
+            })
+
+            // Update Payment Status
+            // TODO: This If Ladder Has to be Updated, Using it Just For Testing Purpose Not Recommended for Production.
+
+            // IF Appointment Status is PENDING → Payment Status will be PENDING
+            if (status === "PENDING") {
+                await tx.payment.update({
+                    where : {
+                        id: currentAppointment?.payment?.id,
+                    },
+
+                    data : {
+                        status: 'PENDING',
+                    }
+                })
+            }
+
+            // If Appointment Status is CONFIRMED → Payment Status will be PROCESSING
+            if (status === "CONFIRMED") {
+                await tx.payment.update({
+                    where : {
+                        id: currentAppointment?.payment?.id,
+                    },
+
+                    data : {
+                        status: 'PROCESSING'
+                    }
+                })
+            }
+
+            // If Appointment Status is CANCELLED → Payment Status will be FAILED
+            if (status === "CANCELLED") {
+                await tx.payment.update({
+                    where : {
+                        id: currentAppointment?.payment?.id,
+                    },
+
+                    data : {
+                        status: 'FAILED'
+                    }
+                })
+            }
+            
+            // If Appointment Status is COMPLETED → Payment Status will be COMPLETED
+            if (status === "COMPLETED") {
+                await tx.payment.update({
+                    where : {
+                        id: currentAppointment?.payment?.id,
+                    },
+                    data : {
+                        status: 'COMPLETED'
+                    }
+                })
+            }
+
+        })
+
+        return {success: true};
+
+    } catch (error) {
+        console.log("Error updating Doctor Appointment Status", error);
+        return {success: false};
     }
 }
