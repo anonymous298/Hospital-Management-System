@@ -16,7 +16,7 @@ export default async function DoctorAdminLayout({
 
   const dbUser = await getCurrentDbUser();
 //   if (!dbUser.doctorId) redirect('/');
-    console.log(dbUser.doctorId)
+    // console.log(dbUser.doctorId)
 
   if (dbUser.role !== 'DOCTOR') redirect('/');
 
