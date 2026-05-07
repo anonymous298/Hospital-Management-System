@@ -67,3 +67,11 @@ export async function fetchSingleDoctor(id: string) {
         throw new Error("Error getting Single Doctor Data");
     }
 }
+
+export async function fetchDateAndTimeSlotBasedOnDoctorId() {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
