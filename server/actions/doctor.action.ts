@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
+import { getCurrentDbUser } from "./user.action";
 
 // Function for fetching Limited Doctors limit-4
 export async function fetchLimitedDoctors() {
@@ -80,7 +81,7 @@ export async function fetchDateAndTimeSlotBasedOnDoctorId() {
 
         // TODO: Add user.doctorId check also
 
-        
+
     } catch (error) {
         
     }
