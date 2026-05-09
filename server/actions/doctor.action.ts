@@ -82,6 +82,7 @@ export async function fetchDateAndTimeSlotBasedOnDoctorId() {
         // TODO: Add user.doctorId check also
 
 
+        
     } catch (error) {
         
     }
