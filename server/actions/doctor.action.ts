@@ -88,3 +88,11 @@ export async function fetchDateAndTimeSlotBasedOnDoctorId() {
         
     }
 }
+
+export async function fetchDoctorProfileBasedOnDoctorId() {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
