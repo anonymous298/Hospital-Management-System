@@ -91,7 +91,15 @@ export async function fetchDateAndTimeSlotBasedOnDoctorId() {
 
 export async function fetchDoctorProfileBasedOnDoctorId() {
     try {
-        
+        const {userId} = await auth();
+        if (!userId) throw new Error("UnAuthenticated User");
+
+        const currentDbUser = await getCurrentDbUser();
+        if (!currentDbUser.id) throw new Error("User not exists in DB!");
+
+        if (currentDbUser.role !== "DOCTOR") throw new Error("Unauthorized Access");
+
+        // TODO: Add user.doctorId check also
     } catch (error) {
         
     }
