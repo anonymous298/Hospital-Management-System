@@ -113,7 +113,15 @@ export async function fetchDoctorProfileBasedOnDoctorId() {
         if (currentDbUser.role !== "DOCTOR") throw new Error("Unauthorized Access");
 
         // TODO: Add user.doctorId check also
+
+        const doctorProfileData = await prisma.doctor.findUnique({
+            where : {
+                id: currentDbUser.doctorId!,
+            }
+        })
+
     } catch (error) {
-        
+        console.log("Error fetching Doctor Profile Based On DoctorId", error);
+        throw new Error("Error fetching Doctor Profile Based On DoctorId");
     }
 }
