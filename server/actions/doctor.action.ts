@@ -81,11 +81,24 @@ export async function fetchDateAndTimeSlotBasedOnDoctorId() {
 
         // TODO: Add user.doctorId check also
 
+        const doctorAvailabilityDatesAndTimeSlots = await prisma.doctorAvailabilityDate.findMany({
+            where : {
+                doctorId: currentDbUser.doctorId!,
+            },
 
+            include: {
+                doctorTimeSlots: true,
+            }
+        });
+
+        if (!doctorAvailabilityDatesAndTimeSlots) return [];
+
+        return doctorAvailabilityDatesAndTimeSlots;
         
         
     } catch (error) {
-        
+        console.log("Error fetching Date and TimeSlot Based On DoctorId", error);
+        throw new Error("Error fetching Date and TimeSlot Based On DoctorId");
     }
 }
 
