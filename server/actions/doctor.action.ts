@@ -120,6 +120,10 @@ export async function fetchDoctorProfileBasedOnDoctorId() {
             }
         })
 
+        if (!doctorProfileData) throw new Error("Doctor Profile Data Not Found");
+
+        return doctorProfileData;
+        
     } catch (error) {
         console.log("Error fetching Doctor Profile Based On DoctorId", error);
         throw new Error("Error fetching Doctor Profile Based On DoctorId");
