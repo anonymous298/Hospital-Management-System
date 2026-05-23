@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 import { getCurrentDbUser } from "./user.action";
+import { DoctorAvailabilityStatus } from "@/app/generated/prisma/enums";
 
 // Function for fetching Limited Doctors limit-4
 export async function fetchLimitedDoctors() {
@@ -123,9 +124,103 @@ export async function fetchDoctorProfileBasedOnDoctorId() {
         if (!doctorProfileData) throw new Error("Doctor Profile Data Not Found");
 
         return doctorProfileData;
-        
+
     } catch (error) {
         console.log("Error fetching Doctor Profile Based On DoctorId", error);
         throw new Error("Error fetching Doctor Profile Based On DoctorId");
+    }
+}
+
+export async function saveDoctorProfileUpdates(
+    {
+        name, 
+        specialization,
+        qualification,
+        about,
+        consultationFee,
+        location,
+        experience,
+        patients,
+        success,
+    } : {
+        name: string,
+        specialization: string,
+        qualification: string,
+        about: string,
+        consultationFee: number,
+        location: string,
+        experience: string,
+        patients: string,
+        success : string,
+    }
+) {
+    try {
+        const {userId} = await auth();
+        if (!userId) throw new Error("UnAuthenticated User");
+
+        const currentDbUser = await getCurrentDbUser();
+        if (!currentDbUser.id) throw new Error("User not exists in DB!");
+
+        if (currentDbUser.role !== "DOCTOR") throw new Error("Unauthorized Access");
+
+        // TODO: Add user.doctorId check also
+
+        const updatedDoctorProfile = await prisma.doctor.update({
+            where : {
+                id: currentDbUser.doctorId!,
+            },
+
+            data : {
+                name,
+                specialization,
+                qualification,
+                location,
+                experience,
+                patients,
+                success,
+                about,
+                consultationFee,
+            }
+        })
+
+        if (!updatedDoctorProfile) throw new Error("Failed to update Doctor Profile");
+
+        return updatedDoctorProfile;
+        
+    } catch (error) {
+        console.log("Error saving Doctor Profile Updates", error);
+        throw new Error("Error saving Doctor Profile Updates");
+    }
+}
+
+export async function updateDoctorAvailability(next: DoctorAvailabilityStatus) {
+    try {
+        const {userId} = await auth();
+        if (!userId) throw new Error("UnAuthenticated User");
+
+        const currentDbUser = await getCurrentDbUser();
+        if (!currentDbUser.id) throw new Error("User not exists in DB!");
+
+        if (currentDbUser.role !== "DOCTOR") throw new Error("Unauthorized Access");
+
+        // TODO: Add user.doctorId check also
+
+        const updatedDoctorAvailability = await prisma.doctor.update({
+            where : {
+                id: currentDbUser.doctorId!,
+            },
+
+            data : {
+                availability: next,
+            }
+        })
+
+        if (!updatedDoctorAvailability) throw new Error("Failed to update Doctor Availability");
+
+        return updatedDoctorAvailability;
+
+    } catch (error) {
+        console.log("Error updating Doctor Availability", error);
+        throw new Error("Error updating Doctor Availability");
     }
 }
