@@ -10,6 +10,7 @@ import {
   CheckCircle2, AlertCircle, BadgeCheck, Info,
   ToggleLeft, ToggleRight, FileText, Shield, UserCircle2,
 } from "lucide-react"
+import { saveDoctorProfileUpdates, updateDoctorAvailability } from "@/server/actions/doctor.action"
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -131,17 +132,17 @@ export default function DoctorProfilePage({DoctorProfileData} : {DoctorProfileDa
     setSaving(true)
 
     // TODO: replace timeout with real server action:
-    // await saveDoctorProfile(user.doctorId, {
-    //   name:            draft.name,
-    //   specialization:  draft.specialization,
-    //   qualification:   draft.qualification,
-    //   location:        draft.location,
-    //   experience:      draft.experience,
-    //   patients:        draft.patients,
-    //   success:         draft.success,
-    //   about:           draft.about,
-    //   consultationFee: draft.consultationFee,
-    // })
+    await saveDoctorProfileUpdates({
+      name:            draft.name,
+      specialization:  draft.specialization,
+      qualification:   draft.qualification,
+      location:        draft.location,
+      experience:      draft.experience,
+      patients:        draft.patients,
+      success:         draft.success,
+      about:           draft.about,
+      consultationFee: draft.consultationFee,
+    })
 
     await new Promise(r => setTimeout(r, 800))
     setProfile({ ...draft })
@@ -155,7 +156,9 @@ export default function DoctorProfilePage({DoctorProfileData} : {DoctorProfileDa
     setProfile(p => ({ ...p, availability: next }))
     if (editing) setDraft(d => ({ ...d, availability: next }))
     fire(`You are now ${next === "AVAILABLE" ? "available" : "unavailable"} for bookings`)
+
     // TODO: await updateDoctorAvailability(user.doctorId, next)
+    await updateDoctorAvailability(next);
   }
 
   const isAvail = profile.availability === "AVAILABLE"
