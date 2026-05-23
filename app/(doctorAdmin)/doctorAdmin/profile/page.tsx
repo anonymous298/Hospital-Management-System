@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import DoctorProfilePage from '@/components/doctorAdmin/Profile/DoctorProfileClientComponent'
 import { fetchDoctorProfileBasedOnDoctorId } from '@/server/actions/doctor.action'
 import React from 'react'
